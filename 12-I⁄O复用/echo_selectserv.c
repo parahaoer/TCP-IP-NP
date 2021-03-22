@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 		timeout.tv_sec = 5;
 		timeout.tv_usec = 5000;
 
-		if(fd_num = select(fd_max + 1, &copy_reads, NULL, NULL, &timeout) == -1) {
+		if((fd_num = select(fd_max + 1, &copy_reads, NULL, NULL, &timeout)) == -1) {
 			//出现错误
 			break;
 		}
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
 		//遍历文件描述符
 		for(i=0; i<fd_max+1; i++) {
-			//有I/O事件的文件描述符
+			//有I/O事件的文件描述符 , select函数改变的是reads的拷贝copy_reads,所以这里发生变化的是copy_reads
 			if(FD_ISSET(i, &copy_reads)) {
 				if(i == serv_sock) {	//connection request
 					adr_sz = sizeof(clnt_adr);
